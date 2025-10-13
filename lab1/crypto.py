@@ -14,37 +14,69 @@ import utils
 # Caesar Cipher
 
 def encrypt_caesar(plaintext):
-    """Encrypt plaintext using a Caesar cipher.
-
-    Add more implementation details here.
-    """
-    raise NotImplementedError  # Your implementation here
-
+    character_list = list(plaintext)
+    A = ord('A')
+    Z = ord('Z')
+    encrypted_message = []
+    for char in character_list:
+        encrypted_char = ord(char)
+        if (char.isalpha()):
+            char = char.capitalize()
+            encrypted_char += 3
+            if (encrypted_char > Z):
+                encrypted_char -= (Z - A + 1)
+        encrypted_message.append(chr(encrypted_char))
+        
+    return ''.join(encrypted_message)
 
 def decrypt_caesar(ciphertext):
-    """Decrypt a ciphertext using a Caesar cipher.
-
-    Add more implementation details here.
-    """
-    raise NotImplementedError  # Your implementation here
-
+    character_list = list(ciphertext)
+    A = ord('A')
+    Z = ord('Z')
+    decrypted_message = []
+    for char in character_list:
+        decrypted_char = ord(char)
+        if (char.isalpha()):
+            char = char.capitalize()
+            decrypted_char -= 3
+            if (decrypted_char < A):
+                decrypted_char += (Z - A + 1)
+        decrypted_message.append(chr(decrypted_char))
+        
+    return ''.join(decrypted_message)
 
 # Vigenere Cipher
 
 def encrypt_vigenere(plaintext, keyword):
-    """Encrypt plaintext using a Vigenere cipher with a keyword.
-
-    Add more implementation details here.
-    """
-    raise NotImplementedError  # Your implementation here
-
+    print(plaintext, keyword)
+    character_list = list(plaintext)
+    keyword_char_list = list(keyword)
+    A = ord('A')
+    Z = ord('Z')
+    encrypted_message = []
+    k = 0
+    for char in character_list:
+        encrypted_char = ord(char) - A + ord(keyword_char_list[k])
+        if (encrypted_char > Z):
+            encrypted_char -= (Z - A + 1)
+        encrypted_message.append(chr(encrypted_char))
+        k = k + 1 if k < len(keyword_char_list) - 1 else 0
+    return ''.join(encrypted_message)
 
 def decrypt_vigenere(ciphertext, keyword):
-    """Decrypt ciphertext using a Vigenere cipher with a keyword.
-
-    Add more implementation details here.
-    """
-    raise NotImplementedError  # Your implementation here
+    character_list = list(ciphertext)
+    keyword_char_list = list(keyword)
+    A = ord('A')
+    Z = ord('Z')
+    decrypted_message = []
+    k = 0
+    for char in character_list:
+        decrypted_char = ord(char) + A - ord(keyword_char_list[k])
+        if (decrypted_char < A):
+            decrypted_char += (Z - A + 1)
+        decrypted_message.append(chr(decrypted_char))
+        k = k + 1 if k < len(keyword_char_list) - 1 else 0
+    return ''.join(decrypted_message)
 
 
 # Merkle-Hellman Knapsack Cryptosystem
