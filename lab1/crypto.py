@@ -194,6 +194,7 @@ def encrypt_scytale(message, circumference):
         raise TypeError("circumference must be a positive integer")
     if (circumference < 0):
         raise ValueError("circumference must be positive")
+    
     char_list = list(message)
     cipher_parts = []
     for _ in range(circumference):
@@ -215,24 +216,29 @@ def decrypt_scytale(cipher, circumference):
         raise TypeError("circumference must be a positive integer")
     if (circumference < 0):
         raise ValueError("circumference must be positive")
-    aux_char = '_'
+    
     char_list = list(cipher)
-    n = circumference - len(cipher) % circumference
-    [left, right] = [char_list[:-n], char_list[-n:]]
-    char_list = left
-    for char in right:
-        char_list.append(char)
-        char_list.append(aux_char)
     cipher_parts = []
     for _ in range(circumference):
         cipher_parts.append([])
 
+    offset = -len(char_list)
+    if (len(char_list) % circumference != 0):
+        offset = circumference - len(char_list) % circumference
+        n = len(char_list)
+        for i in range(offset):
+            char_list.insert(n - i, 'X')
+
+    line_length = len(char_list) // circumference
+
     k = 0
-    for char in char_list:
-        if (char is not aux_char):
-            cipher_parts[k].append(char)
-        k = (k + 1) % n
-    cipher = ""
-    for part in cipher_parts:
-        cipher += ''.join(part)
-    return ''.join(cipher)
+    for i in range(circumference):
+        for _ in range(line_length):
+            cipher_parts[i].append(char_list[k])
+            k += 1
+
+    original_text = ""
+    for i in range(line_length):
+        for j in range(circumference):
+            original_text += cipher_parts[j][i]
+    return original_text[:-offset]
