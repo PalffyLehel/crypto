@@ -242,3 +242,68 @@ def decrypt_scytale(cipher, circumference):
         for j in range(circumference):
             original_text += cipher_parts[j][i]
     return original_text[:-offset]
+
+def encrypt_railfence(message, circumference):
+    if (message == ""):
+        return ""
+    if (not isinstance(circumference, int)):
+        raise TypeError("circumference must be a positive integer")
+    if (circumference < 0):
+        raise ValueError("circumference must be positive")
+    
+    char_list = list(message)
+    cipher_parts = []
+    for _ in range(circumference):
+        cipher_parts.append([])
+
+    k = 0
+    increment = 1
+    for char in char_list:
+        cipher_parts[k].append(char)
+        k = k + increment
+        if (k < 0 or k >= circumference):
+            increment *= -1
+            k += 2 * increment
+    cipher = ""
+
+    for part in cipher_parts:
+        cipher += ''.join(part)
+    return cipher
+
+def decrypt_railfence(message, circumference):
+    if (message == ""):
+        return ""
+    if (not isinstance(circumference, int)):
+        raise TypeError("circumference must be a positive integer")
+    if (circumference < 0):
+        raise ValueError("circumference must be positive")
+    
+    char_list = list(message)
+    cipher_parts = []
+    for _ in range(circumference):
+        cipher_parts.append([])
+
+    k = 0
+    increment = 1
+    for _ in char_list:
+        cipher_parts[k].append('*')
+        k = k + increment
+        if (k < 0 or k >= circumference):
+            increment *= -1
+            k += 2 * increment
+
+    prev = 0
+    for i in range(circumference):
+        cipher_parts[i] = char_list[prev:prev + len(cipher_parts[i])]
+        prev += len(cipher_parts[i])
+    
+    k = 0
+    increment = 1
+    original_message = ""
+    for _ in char_list:
+        original_message += cipher_parts[k].pop(0)
+        k = k + increment
+        if (k < 0 or k >= circumference):
+            increment *= -1
+            k += 2 * increment
+    return original_message
