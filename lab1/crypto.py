@@ -80,14 +80,14 @@ def encrypt_vigenere(plaintext, keyword):
     return ''.join(encrypted_message)
 
 def decrypt_vigenere(ciphertext, keyword):
-    if (plaintext == ""):
+    if (ciphertext == ""):
         return ""
     if (keyword == ""):
         raise ValueError("keyword is required")
     if (not keyword.isalpha()):
         raise ValueError("keyword must only contain letters")
     keyword = keyword.upper()
-    character_list = list(plaintext)
+    character_list = list(ciphertext)
     keyword_char_list = list(keyword)
     A = ord('A')
     Z = ord('Z')
