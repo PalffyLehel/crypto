@@ -14,6 +14,8 @@ import utils
 # Caesar Cipher
 
 def encrypt_caesar(plaintext):
+    if (plaintext == ""):
+        return ""
     character_list = list(plaintext)
     A = ord('A')
     Z = ord('Z')
@@ -22,6 +24,7 @@ def encrypt_caesar(plaintext):
         encrypted_char = ord(char)
         if (char.isalpha()):
             char = char.capitalize()
+            encrypted_char = ord(char)
             encrypted_char += 3
             if (encrypted_char > Z):
                 encrypted_char -= (Z - A + 1)
@@ -30,6 +33,8 @@ def encrypt_caesar(plaintext):
     return ''.join(encrypted_message)
 
 def decrypt_caesar(ciphertext):
+    if (ciphertext == ""):
+        return ""
     character_list = list(ciphertext)
     A = ord('A')
     Z = ord('Z')
@@ -38,6 +43,7 @@ def decrypt_caesar(ciphertext):
         decrypted_char = ord(char)
         if (char.isalpha()):
             char = char.capitalize()
+            decrypted_char = ord(char)
             decrypted_char -= 3
             if (decrypted_char < A):
                 decrypted_char += (Z - A + 1)
@@ -48,7 +54,13 @@ def decrypt_caesar(ciphertext):
 # Vigenere Cipher
 
 def encrypt_vigenere(plaintext, keyword):
-    print(plaintext, keyword)
+    if (plaintext == ""):
+        return ""
+    if (keyword == ""):
+        raise ValueError("keyword is required")
+    if (not keyword.isalpha()):
+        raise ValueError("keyword must only contain letters")
+    keyword = keyword.upper()
     character_list = list(plaintext)
     keyword_char_list = list(keyword)
     A = ord('A')
@@ -56,27 +68,42 @@ def encrypt_vigenere(plaintext, keyword):
     encrypted_message = []
     k = 0
     for char in character_list:
-        encrypted_char = ord(char) - A + ord(keyword_char_list[k])
-        if (encrypted_char > Z):
-            encrypted_char -= (Z - A + 1)
-        encrypted_message.append(chr(encrypted_char))
+        if (char.isalpha()):
+            char = char.capitalize()
+            encrypted_char = ord(char) - A + ord(keyword_char_list[k])
+            if (encrypted_char > Z):
+                encrypted_char -= (Z - A + 1)
+            encrypted_message.append(chr(encrypted_char))
+        else:
+            encrypted_message.append(char)
         k = k + 1 if k < len(keyword_char_list) - 1 else 0
     return ''.join(encrypted_message)
 
 def decrypt_vigenere(ciphertext, keyword):
-    character_list = list(ciphertext)
+    if (plaintext == ""):
+        return ""
+    if (keyword == ""):
+        raise ValueError("keyword is required")
+    if (not keyword.isalpha()):
+        raise ValueError("keyword must only contain letters")
+    keyword = keyword.upper()
+    character_list = list(plaintext)
     keyword_char_list = list(keyword)
     A = ord('A')
     Z = ord('Z')
-    decrypted_message = []
+    encrypted_message = []
     k = 0
     for char in character_list:
-        decrypted_char = ord(char) + A - ord(keyword_char_list[k])
-        if (decrypted_char < A):
-            decrypted_char += (Z - A + 1)
-        decrypted_message.append(chr(decrypted_char))
+        if (char.isalpha()):
+            char = char.capitalize()
+            encrypted_char = ord(char) + A - ord(keyword_char_list[k])
+            if (encrypted_char < A):
+                encrypted_char += (Z - A + 1)
+            encrypted_message.append(chr(encrypted_char))
+        else:
+            encrypted_message.append(char)
         k = k + 1 if k < len(keyword_char_list) - 1 else 0
-    return ''.join(decrypted_message)
+    return ''.join(encrypted_message)
 
 
 # Merkle-Hellman Knapsack Cryptosystem
@@ -160,3 +187,5 @@ def decrypt_mh(message, private_key):
     """
     raise NotImplementedError  # Your implementation here
 
+def encrypt_scytale(message):
+    return
