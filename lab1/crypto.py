@@ -187,5 +187,52 @@ def decrypt_mh(message, private_key):
     """
     raise NotImplementedError  # Your implementation here
 
-def encrypt_scytale(message):
-    return
+def encrypt_scytale(message, circumference):
+    if (message == ""):
+        return ""
+    if (not isinstance(circumference, int)):
+        raise TypeError("circumference must be a positive integer")
+    if (circumference < 0):
+        raise ValueError("circumference must be positive")
+    char_list = list(message)
+    cipher_parts = []
+    for _ in range(circumference):
+        cipher_parts.append([])
+
+    k = 0
+    for char in char_list:
+        cipher_parts[k].append(char)
+        k = (k + 1) % circumference
+    cipher = ""
+    for part in cipher_parts:
+        cipher += ''.join(part)
+    return cipher
+
+def decrypt_scytale(cipher, circumference):
+    if (cipher == ""):
+        return ""
+    if (not isinstance(circumference, int)):
+        raise TypeError("circumference must be a positive integer")
+    if (circumference < 0):
+        raise ValueError("circumference must be positive")
+    aux_char = '_'
+    char_list = list(cipher)
+    n = circumference - len(cipher) % circumference
+    [left, right] = [char_list[:-n], char_list[-n:]]
+    char_list = left
+    for char in right:
+        char_list.append(char)
+        char_list.append(aux_char)
+    cipher_parts = []
+    for _ in range(circumference):
+        cipher_parts.append([])
+
+    k = 0
+    for char in char_list:
+        if (char is not aux_char):
+            cipher_parts[k].append(char)
+        k = (k + 1) % n
+    cipher = ""
+    for part in cipher_parts:
+        cipher += ''.join(part)
+    return ''.join(cipher)
